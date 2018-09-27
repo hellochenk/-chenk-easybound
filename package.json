@@ -1,0 +1,22 @@
+{
+	"name": "-chenk-easybound",
+	"version": "1.0.0",
+	"main": "index.js",
+	"repository": "https://github.com/hellochenk/-chenk-easybound.git",
+	"author": "hellochenk <657301050@qq.com>",
+	"license": "MIT",
+	"bin": {
+		"easy": "./bin/index.js"
+	},
+	"scripts": {
+		"dev": "translate code dev model",
+		"pro": "translate code pro model",
+		"test": "rimraf lib && babel src --out-dir lib"
+	},
+	"dependencies": {
+		"babel": "^6.23.0",
+		"babel-cli": "^6.26.0",
+		"babel-core": "^6.26.3",
+		"rimraf": "^2.6.2"
+	}
+}
