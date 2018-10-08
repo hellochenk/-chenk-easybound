@@ -1,3 +1,7 @@
 #!/usr/bin/env node
-// cli -> gooooooooo ->
-console.log("cli running");
+// go->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+const Main = require("../lib/index.js").default;
+
+let main = new Main();
+// main.cmd();
+main.testFn();
