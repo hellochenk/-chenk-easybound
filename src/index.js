@@ -1,11 +1,15 @@
 const commander = require("commander");
 const webpack = require("webpack");
+const chalk = require("chalk");
+
+import Loader from './loader-helper'
 
 class Main {
 	// commander;
 	constructor() {
 		this.commander = commander;
 		this.webpack = webpack;
+		this.loader = new Loader();
 	}
 
 	cmd() {
@@ -70,7 +74,7 @@ class Main {
 			return commander.outputHelp();
 		}
 
-		console.log("you ordered a pizza with:");
+		console.log(chalk.magenta("you ordered a pizza with:"));
 		if (commander.peppers) {
 			console.log("  - peppers", commander.peppers);
 		}
@@ -82,7 +86,7 @@ class Main {
 		}
 		console.log("  - %s cheese", commander.cheese);
 
-		console.log(process.argv);
+		console.log(this.loader.load());
 	}
 }
 
