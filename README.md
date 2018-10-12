@@ -1,4 +1,3 @@
-# easybound
 
 ## 为什么要easybound?
 省去每次新创建项目时都要重复编写各种webpack配置loader，plugin。<br/>
