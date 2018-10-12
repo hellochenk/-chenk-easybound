@@ -1,6 +1,6 @@
 # easybound
 
-# 为什么要easybound?
+## 为什么要easybound?
 省去每次新创建项目时都要重复编写各种webpack配置loader，plugin。<br/>
 我想只需要指定入口，就可以输出文件，
   
