@@ -101,17 +101,8 @@ class Main {
 				path: path.resolve(workingDir, './test/'),
 				filename: 'test.js'
 			}
-		}, (err, stats) => {
-			// if (err) throw err;
-   //          process.stdout.write(stats.toString({
-   //                  colors: true,
-   //                  modules: false,
-   //                  children: false,
-   //                  chunks: false,
-   //                  chunkModules: false
-   //              })
-   //              + `\n`);
-		})
+		}, () => {})
+		// WebpackDevServer.addDevServerEntrypoints(webpackConfig, devServer);
 		// );
 		let bundleStartTime = moment(new Date())
 		// 2.webpack编译
