@@ -1,14 +1,17 @@
 const commander = require("commander");
 const webpack = require("webpack");
 const chalk = require("chalk");
+const path = require('path')
+import moment from 'moment'
 
 import Loader from './loader-helper'
+const workingDir = process.cwd()
 
 class Main {
 	// commander;
 	constructor() {
 		this.commander = commander;
-		this.webpack = webpack;
+		// this.webpack = webpack;
 		this.loader = new Loader();
 	}
 
@@ -43,6 +46,10 @@ class Main {
 	dev() {
 		// 执行develop模式
 		console.log(webpack);
+	}
+
+	prod() {
+
 	}
 
 	testFn(target, files) {
@@ -85,8 +92,39 @@ class Main {
 			console.log("  - bbq", commander.bbqSauce);
 		}
 		console.log("  - %s cheese", commander.cheese);
+		// 1.读取配置......
+		let myconfig = this.loader.load()
+		// console.log(
+		let a = webpack({
+			entry:'./src/home/index',
+			output: {
+				path: path.resolve(workingDir, './test/'),
+				filename: 'test.js'
+			}
+		}, (err, stats) => {
+			// if (err) throw err;
+   //          process.stdout.write(stats.toString({
+   //                  colors: true,
+   //                  modules: false,
+   //                  children: false,
+   //                  chunks: false,
+   //                  chunkModules: false
+   //              })
+   //              + `\n`);
+		})
+		// );
+		let bundleStartTime = moment(new Date())
+		// 2.webpack编译
+		a.plugin('compile', () => {
+            bundleStartTime = moment(new Date())
+            console.info(`${new Date()} 打包中...`, bundleStartTime);
+        });
 
-		console.log(this.loader.load());
+        a.plugin('done', () => {
+            const timeSpent = moment(new Date()) - bundleStartTime;
+            console.info(chalk.cyan(`${new Date()} 打包完成, 耗时 ${timeSpent} s.`));
+        });
+
 	}
 }
 
