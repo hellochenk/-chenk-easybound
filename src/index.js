@@ -1,22 +1,26 @@
 const commander = require("commander");
 const webpack = require("webpack");
 const chalk = require("chalk");
-const path = require('path')
-import moment from 'moment'
+const path = require("path");
 
-import Loader from './loader-helper'
-const workingDir = process.cwd()
+import moment from "moment";
+import webpackConfigure from "./webpack-configrue.js";
+import ReadConfig from "./readConfig.js";
+
+const workingDir = process.cwd();
+const log = console.log;
 
 class Main {
 	// commander;
 	constructor() {
 		this.commander = commander;
-		// this.webpack = webpack;
-		this.loader = new Loader();
+		this.ReadConfig = new ReadConfig();
+		this.webpackConfigure = new webpackConfigure();
 	}
 
 	cmd() {
-		this.commander
+		const { commander } = this;
+		commander
 			.version("0.1")
 			.option("-D, --dev", "运行开发环境", v => v, "development")
 			.option(
@@ -35,24 +39,34 @@ class Main {
 
 		if (commander.dev) {
 			// this.testFn(commander.dev, commander.config);
-			this.dev();
+			this.dev(commander.dev, commander.config);
 		}
 
 		if (commander.dist) {
-			this.testFn(commander.dist, commander.config);
+			this.prod(commander.dist, commander.config);
 		}
 	}
 
-	dev() {
+	getWebpackCompiler(webpackConfig, callBack) {
+		// 传入生成配置，执行编译
+		const compile = webpack(webpackConfig, callBack);
+		return compile;
+	}
+
+	dev(target, file) {
 		// 执行develop模式
-		console.log(webpack);
+		log(chalk.cyan(`start compile.`), chalk.red(`model: ${target}`));
+		const setting = this.ReadConfig.read(file);
+		const appConfig = this.webpackConfigure.build(setting);
+		console.log(appConfig);
+		// this.getWebpackCompiler(webpackConfig)
 	}
 
-	prod() {
-
+	prod(target, file) {
+		// 将文件编译打包，
 	}
 
-	testFn(target, files) {
+	/*testFn(target, files) {
 		// console.log("test console");
 		commander
 			.version("0.1.0")
@@ -115,8 +129,7 @@ class Main {
             const timeSpent = moment(new Date()) - bundleStartTime;
             console.info(chalk.cyan(`${new Date()} 打包完成, 耗时 ${timeSpent} s.`));
         });
-
-	}
+	}*/
 }
 
 export default Main;
