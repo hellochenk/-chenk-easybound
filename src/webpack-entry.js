@@ -8,10 +8,10 @@ export default class Entry extends Configure {
 	configure(webpack) {
 		const { config: { apps } } = this;
 		if (typeof apps === "string") {
-			webpack.entry = `./src/${apps}`
+			webpack.entry = `./src/${apps}/index.js`
 		} else {
 			webpack.entry = apps.reduce((acc, cur) =>{
-				return {...acc, [cur]: `./src/${cur}/`}
+				return {...acc, [cur]: `./src/${cur}/index.js`}
 			}, {})
 		}
 	}

@@ -55,18 +55,36 @@ class Main {
 
 	dev(target, file) {
 		// 执行develop模式
-		log(chalk.cyan(`start compile. model:`), chalk.red(`${target}`));
+		log(chalk.cyan(`start compile. model:${target}`));
+		process.env.app_mode = "dev";
+
 		const setting = this.ReadConfig.read(file);
+		setting.mode = "development";
 		const appConfig = this.webpackConfigure.build(setting);
-		console.log('appConfig ->', appConfig);
-		this.getWebpackCompiler(appConfig, () => {})
+		console.log("appConfig ->", appConfig);
+		this.getWebpackCompiler(appConfig, (err, stats) => {
+			if (err) {
+				return console.log(chalk.red(err));
+			}
+			process.stdout.write(
+				stats.toString({
+					colors: true,
+					modules: false,
+					children: false,
+					chunks: false,
+					chunkModules: false
+				}) + `\n`
+			);
+		});
 	}
 
 	prod(target, file) {
 		// 将文件编译打包，
+		log(chalk.cyan(`start compile. model:`), chalk.red(`${target}`));
+		process.env.app_mode = "prod";
 	}
 
-	/*testFn(target, files) {
+	/* testFn(target, files) {
 		// console.log("test console");
 		commander
 			.version("0.1.0")
@@ -129,7 +147,7 @@ class Main {
             const timeSpent = moment(new Date()) - bundleStartTime;
             console.info(chalk.cyan(`${new Date()} 打包完成, 耗时 ${timeSpent} s.`));
         });
-	}*/
+	} */
 }
 
 export default Main;

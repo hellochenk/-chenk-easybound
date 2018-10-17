@@ -3,6 +3,8 @@ const fs = require('fs');
 
 import Entry from './webpack-entry.js';
 import OutPut from './webpack-output.js';
+import Plugin from './webpack-plugin.js';
+import Module from './webpack-module.js'
 
 const workPath = process.cwd()
 
@@ -20,23 +22,33 @@ export default class Configrue{
 	}
 
 	build(setting) {
-		// complie...
 		if(!setting) return;
-		
-		const webpacks = [
+		const configrues = [
 			new Entry(setting),
-			new OutPut(setting)
+			new OutPut(setting),
+			new Plugin(setting),
+			new Module(setting)
 		];
-		/**
-		 * TODO......
-		 * 1.实例化 webpack各个部分（入口，出口，loader，plugin）
-		 * 2.调用configure更新配置
-		 * 3.返回新配置
-		 */
-		webpacks.map(item => {
-			return item.configure(this.webpackConfig)
-		})
-		return this.webpackConfig
+
+		let webpack = {
+			...this.webpackConfig,
+			mode: process.env.app_mode === 'dev' 
+				? 'development'
+				: 'production' ,
+			devtool: process.env.app_mode === 'dev'
+				? 'source-map'
+				: false,
+			resolve: {
+				extensions:['.js', '.jsx', '.json']
+			}
+		}
+
+		// 生成 webpack 配置
+		configrues.map(item => {
+			return item.configure(webpack)
+		});
+
+		return webpack
 	}
 
 }
