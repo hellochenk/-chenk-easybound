@@ -1,15 +1,18 @@
 import Configure from "./configure.js";
-
+/* 根据配置，生成项目入口 */
 export default class Entry extends Configure {
 	constructor(props) {
 		super(props);
 	}
 
 	configure(webpack) {
-		console.log("获取入口......", this);
-		// const { config: { app } } = this
-		// 从 config 中取出所需物件，整理到webpack中
-
-		return webpack;
+		const { config: { apps } } = this;
+		if (typeof apps === "string") {
+			webpack.entry = `./src/${apps}`
+		} else {
+			webpack.entry = apps.reduce((acc, cur) =>{
+				return {...acc, [cur]: `./src/${cur}/`}
+			}, {})
+		}
 	}
 }

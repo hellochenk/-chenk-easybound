@@ -55,11 +55,11 @@ class Main {
 
 	dev(target, file) {
 		// 执行develop模式
-		log(chalk.cyan(`start compile.`), chalk.red(`model: ${target}`));
+		log(chalk.cyan(`start compile. model:`), chalk.red(`${target}`));
 		const setting = this.ReadConfig.read(file);
 		const appConfig = this.webpackConfigure.build(setting);
-		console.log(appConfig);
-		// this.getWebpackCompiler(webpackConfig)
+		console.log('appConfig ->', appConfig);
+		this.getWebpackCompiler(appConfig, () => {})
 	}
 
 	prod(target, file) {

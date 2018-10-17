@@ -1,4 +1,8 @@
+const path = require('path')
+
 import Configure from "./configure.js";
+
+const workDir = process.cwd();
 
 export default class Output extends Configure {
 	constructor(props) {
@@ -6,8 +10,10 @@ export default class Output extends Configure {
 	}
 
 	configure(webpack) {
-		console.log("获取出口......", this);
-		// const { dll, version } = this.config;
-		return webpack;
+		const { dll, version } = this.config;
+		webpack.output = {
+			path: path.resolve(workDir, 'dist/'),
+			filename: `[name]/js/[name][hash:4].js`
+		}
 	}
 }

@@ -6,15 +6,17 @@ import OutPut from './webpack-output.js';
 
 const workPath = process.cwd()
 
+const defaultConfig = {
+	entry: './src/index',
+	output: {
+		filename: `[name]-[chunkhash:4].js`,
+		path: path.resolve(workPath, './dist/js')
+	}
+}
+
 export default class Configrue{
 	constructor() {
-		this.webpackConfig = {
-			entry: 'testentry.js',
-			outPut: {
-				filename: 'haha.js',
-				path: ''
-			}
-		}
+		this.webpackConfig = defaultConfig
 	}
 
 	build(setting) {
@@ -34,9 +36,7 @@ export default class Configrue{
 		webpacks.map(item => {
 			return item.configure(this.webpackConfig)
 		})
-
-		// console.log(webpacks)
-		
+		return this.webpackConfig
 	}
 
 }
