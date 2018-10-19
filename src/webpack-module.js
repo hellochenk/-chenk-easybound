@@ -11,7 +11,10 @@ export default class Module extends Configure {
 		 * 装载配置，更新webpack然后返回
 		 */
 		webpack.module = {
-			rules: [this.loaderJs()]
+			rules: [
+				this.loaderJs(),
+				...this.loadStyles()
+			]
 		};
 		return webpack;
 	}
@@ -28,5 +31,27 @@ export default class Module extends Configure {
 				}
 			}
 		};
+	}
+
+	loadStyles() {
+		let css = {
+			test: /\.css$/,
+			use: ["style-loader", "css-loader"]
+		};
+		let scss = {
+			test: /\.scss$/,
+			use: [
+				{
+					loader: "style-loader" // 将 JS 字符串生成为 style 节点
+				},
+				{
+					loader: "css-loader" // 将 CSS 转化成 CommonJS 模块
+				},
+				{
+					loader: "sass-loader" // 将 Sass 编译成 CSS
+				}
+			]
+		};
+		return [css, scss]
 	}
 }

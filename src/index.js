@@ -4,6 +4,7 @@ const chalk = require("chalk");
 const path = require("path");
 
 import moment from "moment";
+import WebpackDevServer from "webpack-dev-server";
 import webpackConfigure from "./webpack-configrue.js";
 import ReadConfig from "./readConfig.js";
 
@@ -49,33 +50,72 @@ class Main {
 
 	getWebpackCompiler(webpackConfig, callBack) {
 		// 传入生成配置，执行编译
-		const compile = webpack(webpackConfig, callBack);
-		return compile;
+		const compiler = webpack(webpackConfig, callBack);
+		if (!callBack) {
+			let bundleStartTime;
+			compiler.plugin("compile", () => {
+				console.info(`${new Date()} 打包中...`);
+				bundleStartTime = Date.now();
+			});
+
+			compiler.plugin("done", () => {
+				const timeSpent = Date.now() - bundleStartTime;
+				console.info(
+					`${new Date()} 打包完成, 耗时 ${timeSpent / 1000} s.`
+				);
+			});
+		}
+		return compiler;
 	}
 
 	dev(target, file) {
-		// 执行develop模式
-		log(chalk.cyan(`start compile. model:${target}`));
-		process.env.app_mode = "dev";
+		try{
+			// 执行develop模式
+			log(chalk.cyan(`start compile. model:${target}`));
+			process.env.app_mode = "dev";
 
-		const setting = this.ReadConfig.read(file);
-		setting.mode = "development";
-		const appConfig = this.webpackConfigure.build(setting);
-		console.log("appConfig ->", appConfig);
-		this.getWebpackCompiler(appConfig, (err, stats) => {
-			if (err) {
-				return console.log(chalk.red(err));
-			}
-			process.stdout.write(
-				stats.toString({
-					colors: true,
-					modules: false,
-					children: false,
-					chunks: false,
-					chunkModules: false
-				}) + `\n`
-			);
-		});
+			const setting = this.ReadConfig.read(file);
+			setting.mode = "development";
+			const appConfig = this.webpackConfigure.build(setting);
+			const { devServer } = appConfig;
+			const compile = this.getWebpackCompiler(appConfig);
+			
+			// WebpackDevServer.addDevServerEntrypoints(appConfig, devServer);
+			new WebpackDevServer(
+				this.getWebpackCompiler(appConfig),
+				
+			).listen(devServer.port, err => {
+				// console.log('err: ', err)
+				if (err) {
+					console.log(err);
+				}
+				console.log(`应用启动成功，端口:${devServer.port}`);
+			});
+
+			// if (devServer.open) {
+			// 	const {name, basePath, apps} = options;
+			// 	const {host, port} = devServer;
+			// 	open(`http://${host}${port ? (":" + port) : ""}${basePath}/${name}/${apps[0]}`)
+			// }
+
+			// this.getWebpackCompiler(appConfig, (err, stats) => {
+			// 	if (err) {
+			// 		return console.log(chalk.red(err));
+			// 	}
+			// 	process.stdout.write(
+			// 		stats.toString({
+			// 			colors: true,
+			// 			modules: false,
+			// 			children: false,
+			// 			chunks: false,
+			// 			chunkModules: false
+			// 		}) + `\n`
+			// 	);
+			// });
+			
+		} catch(err) {
+			console.log('err', chalk.red(err))
+		}
 	}
 
 	prod(target, file) {

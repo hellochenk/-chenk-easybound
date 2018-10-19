@@ -4,7 +4,8 @@ const fs = require('fs');
 import Entry from './webpack-entry.js';
 import OutPut from './webpack-output.js';
 import Plugin from './webpack-plugin.js';
-import Module from './webpack-module.js'
+import Module from './webpack-module.js';
+import DevServer from './webpack-devServer.js';
 
 const workPath = process.cwd()
 
@@ -27,7 +28,8 @@ export default class Configrue{
 			new Entry(setting),
 			new OutPut(setting),
 			new Plugin(setting),
-			new Module(setting)
+			new Module(setting),
+			new DevServer(setting)
 		];
 
 		let webpack = {
