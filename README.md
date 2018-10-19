@@ -4,6 +4,6 @@
 我想只需要指定入口，就可以输出文件，
   
 - <del>实现demo</del>
-- 编译react类型项目
+- <del>编译react类型项目</del>
 - 编译ng类型项目
 - 编译node类型项目
