@@ -6,6 +6,7 @@ import OutPut from './webpack-output.js';
 import Plugin from './webpack-plugin.js';
 import Module from './webpack-module.js';
 import DevServer from './webpack-devServer.js';
+import TsConfigure from './webpack-tsloader.js';
 
 const workPath = process.cwd()
 
@@ -53,4 +54,35 @@ export default class Configrue{
 		return webpack
 	}
 
+	compileTs(setting) {
+		// 生成ts配置
+		if(!setting) return;
+		const configrues = [
+			new Entry(setting),
+			new OutPut(setting),
+			new Plugin(setting),
+			new DevServer(setting),
+			new TsConfigure(setting)
+		];
+
+		let webpack = {
+			...this.webpackConfig,
+			mode: process.env.app_mode === 'dev' 
+				? 'development'
+				: 'production' ,
+			devtool: process.env.app_mode === 'dev'
+				? 'source-map'
+				: false,
+			resolve: {
+				extensions:['.js', '.ts', '.tsx']
+			}
+		}
+
+		// 生成 webpack 配置
+		configrues.map(item => {
+			return item.configure(webpack)
+		});
+
+		return webpack
+	}
 }

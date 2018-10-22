@@ -30,6 +30,7 @@ class Main {
 				v => v,
 				"production"
 			)
+			.option("-t, --ts", "运行ts模式", v => v, "typescript")
 			.option("-c. --config <items>", "指定配置文件", v => v.split(","))
 			.parse(process.argv);
 
@@ -41,6 +42,10 @@ class Main {
 		if (commander.dev) {
 			// this.testFn(commander.dev, commander.config);
 			this.dev(commander.dev, commander.config);
+		}
+
+		if(commander.ts) {
+			this.ts(commander.ts, commander.config);
 		}
 
 		if (commander.dist) {
@@ -122,6 +127,32 @@ class Main {
 		// 将文件编译打包，
 		log(chalk.cyan(`start compile. model:`), chalk.red(`${target}`));
 		process.env.app_mode = "prod";
+	}
+
+	ts(target, file) {
+		log(chalk.cyan(`start compile. model:${target}`));
+		process.env.app_mode = "ts";
+		const setting = this.ReadConfig.read(file);
+		setting.mode = "development";
+		// console.log('setting ->>>>>>', setting)
+
+		const appConfig = this.webpackConfigure.compileTs(setting);
+		// console.log('ts config ================>', appConfig);
+
+		const { devServer } = appConfig;
+		const compile = this.getWebpackCompiler(appConfig);
+		
+		// // WebpackDevServer.addDevServerEntrypoints(appConfig, devServer);
+		new WebpackDevServer(
+			this.getWebpackCompiler(appConfig),
+			
+		).listen(devServer.port, err => {
+			if (err) {
+				console.log(err);
+			}
+			console.log(`应用启动成功，端口:${devServer.port}`);
+		});
+
 	}
 
 	/* testFn(target, files) {
