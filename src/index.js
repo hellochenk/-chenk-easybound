@@ -77,7 +77,9 @@ class Main {
 		try{
 			// 执行develop模式
 			log(chalk.cyan(`start compile. model:${target}`));
-			process.env.app_mode = "dev";
+			// NODE_ENV
+			process.env.NODE_ENV = "development";
+			// process.env.NODE_ENV = "production";
 
 			const setting = this.ReadConfig.read(file);
 			setting.mode = "development";

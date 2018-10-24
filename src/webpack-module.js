@@ -25,10 +25,11 @@ export default class Module extends Configure {
 			exclude: /(node_modules|bower_components)/,
 			use: {
 				loader: "babel-loader",
-				options: {
-					presets: ["@babel/preset-env", "@babel/preset-react"],
-					plugins: ["@babel/plugin-transform-runtime"]
-				}
+				// custom babel loader......
+				// options: {
+				// 	presets: ["@babel/preset-env", "@babel/preset-react"],
+				// 	plugins: ["@babel/plugin-transform-runtime", "@babel/plugin-syntax-dynamic-import"]
+				// }
 			}
 		};
 	}
