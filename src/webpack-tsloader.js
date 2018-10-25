@@ -7,7 +7,7 @@ export default class GeneratTsConfig extends Configure {
 
 	configure(webpack) {
 		// TODO
-		console.log("generat ts config......");
+		// console.log("generat ts config......");
 		webpack.module = {
 			rules: [
 				{

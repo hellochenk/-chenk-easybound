@@ -1,7 +1,5 @@
 const path = require('path')
-
 import Configure from "./configure.js";
-
 const workDir = process.cwd();
 
 export default class Output extends Configure {

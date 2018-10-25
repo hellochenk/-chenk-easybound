@@ -7,7 +7,6 @@ export default class Entry extends Configure {
 
 	configure(webpack) {
 		const { config: { apps, lang } } = this;
-		// console.log('lang ->>>>>>>>>>>>>', lang)
 		if (typeof apps === "string") {
 			webpack.entry = `./src/${apps}/index.${lang}`
 		} else {

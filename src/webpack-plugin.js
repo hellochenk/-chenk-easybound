@@ -26,8 +26,7 @@ export default class Plugin extends Configure {
 
 	getHtmlWebpackPlugin(webpack) {
 		const { output } = webpack
-
-		console.log('path ......', output.path)
+		// console.log('path ......', output.path)
 		// const aa = fs.readFileSync(path.resolve(workDir, `./src/home/index.html`))
 		// fs.writeFileSync(path.resolve(workDir, './haha'), aa)
 		// console.log('aa ->>>>>>', aa)

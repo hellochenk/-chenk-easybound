@@ -44,7 +44,7 @@ class Main {
 			this.dev(commander.dev, commander.config);
 		}
 
-		if(commander.ts) {
+		if (commander.ts) {
 			this.ts(commander.ts, commander.config);
 		}
 
@@ -74,25 +74,25 @@ class Main {
 	}
 
 	dev(target, file) {
-		try{
+		try {
 			// 执行develop模式
 			log(chalk.cyan(`start compile. model:${target}`));
-			// NODE_ENV
 			process.env.NODE_ENV = "development";
-			// process.env.NODE_ENV = "production";
 
 			const setting = this.ReadConfig.read(file);
 			setting.mode = "development";
 			const appConfig = this.webpackConfigure.build(setting);
+			// const compile = this.getWebpackCompiler(appConfig);
+
 			const { devServer } = appConfig;
-			const compile = this.getWebpackCompiler(appConfig);
-			
+			// console.log('devServer', devServer)
 			// WebpackDevServer.addDevServerEntrypoints(appConfig, devServer);
 			new WebpackDevServer(
 				this.getWebpackCompiler(appConfig),
-				
-			).listen(devServer.port, err => {
+				devServer
+			).listen(devServer.port, devServer.host, err => {
 				// console.log('err: ', err)
+				console.log('start .................')
 				if (err) {
 					console.log(err);
 				}
@@ -119,9 +119,8 @@ class Main {
 			// 		}) + `\n`
 			// 	);
 			// });
-			
-		} catch(err) {
-			console.log('err', chalk.red(err))
+		} catch (err) {
+			console.log("err", chalk.red(err));
 		}
 	}
 
@@ -143,18 +142,17 @@ class Main {
 
 		const { devServer } = appConfig;
 		const compile = this.getWebpackCompiler(appConfig);
-		
-		// // WebpackDevServer.addDevServerEntrypoints(appConfig, devServer);
-		new WebpackDevServer(
-			this.getWebpackCompiler(appConfig),
-			
-		).listen(devServer.port, err => {
-			if (err) {
-				console.log(err);
-			}
-			console.log(`应用启动成功，端口:${devServer.port}`);
-		});
 
+		// // WebpackDevServer.addDevServerEntrypoints(appConfig, devServer);
+		new WebpackDevServer(this.getWebpackCompiler(appConfig)).listen(
+			devServer.port,
+			err => {
+				if (err) {
+					console.log(err);
+				}
+				console.log(`应用启动成功，端口:${devServer.port}`);
+			}
+		);
 	}
 
 	/* testFn(target, files) {
