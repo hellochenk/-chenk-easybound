@@ -19,12 +19,9 @@ export default class Plugin extends Configure {
 			...this.getHtmlWebpackPlugin(webpack)
 		    // new UglifyJSPlugin()
 		]
-		if(process.env.app_mode !== 'development') {
-			webpack.plugins.push((new UglifyJSPlugin({
-
-			})))
-		}
-		// this.getHtmlWebpackPlugin()
+		if(process.env.NODE_ENV !== 'development') {
+			webpack.plugins.push(new UglifyJSPlugin())
+		};
 	}
 
 	getHtmlWebpackPlugin(webpack) {

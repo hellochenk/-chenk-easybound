@@ -35,10 +35,10 @@ export default class Configrue{
 
 		let webpack = {
 			...this.webpackConfig,
-			mode: process.env.app_mode === 'dev' 
+			mode: process.env.NODE_ENV === 'development' 
 				? 'development'
 				: 'production' ,
-			devtool: process.env.app_mode === 'dev'
+			devtool: process.env.NODE_ENV === 'development'
 				? 'source-map'
 				: false,
 			resolve: {
@@ -50,8 +50,7 @@ export default class Configrue{
 		configrues.map(item => {
 			return item.configure(webpack)
 		});
-
-		return webpack
+		return webpack;
 	}
 
 	compileTs(setting) {
@@ -67,10 +66,10 @@ export default class Configrue{
 
 		let webpack = {
 			...this.webpackConfig,
-			mode: process.env.app_mode === 'dev' 
+			mode: process.env.NODE_ENV === 'dev' 
 				? 'development'
 				: 'production' ,
-			devtool: process.env.app_mode === 'dev'
+			devtool: process.env.NODE_ENV === 'dev'
 				? 'source-map'
 				: false,
 			resolve: {
@@ -82,7 +81,6 @@ export default class Configrue{
 		configrues.map(item => {
 			return item.configure(webpack)
 		});
-
 		return webpack
 	}
 }
