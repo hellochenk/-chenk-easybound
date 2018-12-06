@@ -32,6 +32,7 @@ class Main {
 			)
 			.option("-t, --ts", "运行ts模式", v => v, "typescript")
 			.option("-c. --config <items>", "指定配置文件", v => v.split(","))
+			.version('0.0.1', '-v, --version')
 			.parse(process.argv);
 
 		if (process.argv.length <= 2) {
