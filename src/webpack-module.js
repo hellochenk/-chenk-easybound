@@ -11,10 +11,7 @@ export default class Module extends Configure {
 		 * 装载配置，更新webpack然后返回
 		 */
 		webpack.module = {
-			rules: [
-				this.loaderJs(),
-				...this.loadStyles()
-			]
+			rules: [this.loaderJs(), ...this.loadStyles()]
 		};
 		return webpack;
 	}
@@ -24,7 +21,7 @@ export default class Module extends Configure {
 			test: /\.jsx?$/,
 			exclude: /(node_modules|bower_components)/,
 			use: {
-				loader: "babel-loader",
+				loader: "babel-loader"
 				// custom babel loader......
 				// options: {
 				// 	presets: ["@babel/preset-env", "@babel/preset-react"],
@@ -53,6 +50,6 @@ export default class Module extends Configure {
 				}
 			]
 		};
-		return [css, scss]
+		return [css, scss];
 	}
 }

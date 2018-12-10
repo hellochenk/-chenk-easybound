@@ -10,7 +10,7 @@ export default class ReadConfig {
 	static defaultconfig = {
 		name: "myApp",
 		title: "myApp",
-		port: "8081"
+		port: "8080"
 	};
 
 	constructor(name = ReadConfig.defaultConfigName) {

@@ -1,4 +1,4 @@
-const path = require('path');
+const path = require("path");
 
 import Configure from "./configure.js";
 
@@ -8,18 +8,19 @@ export default class DevServer extends Configure {
 	}
 
 	configure(webpack) {
-		if(process.env.app_mode === 'production') return;
+		if (process.env.NODE_ENV === "production") return;
 		const { port, localhost } = this.config;
 		const { output } = webpack;
 		// console.log('output ->>>>', output)
-		
+
 		webpack.devServer = {
-			contentBase: path.join(__dirname, "dist"),
-			compress: true,
-			port: port || 9870,
-			host: localhost || 'localhost',
+			contentBase: path.join(__dirname, "public"),
+			// compress: true,
+			port: port || 8080,
+			host: localhost || "127.0.0.1",
+			inline: true,
 			hot: true,
-    		inline: true
+			open: true
 		};
 	}
 }

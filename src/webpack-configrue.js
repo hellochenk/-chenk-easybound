@@ -1,30 +1,30 @@
-const path = require('path');
-const fs = require('fs');
+const path = require("path");
+const fs = require("fs");
 
-import Entry from './webpack-entry.js';
-import OutPut from './webpack-output.js';
-import Plugin from './webpack-plugin.js';
-import Module from './webpack-module.js';
-import DevServer from './webpack-devServer.js';
-import TsConfigure from './webpack-tsloader.js';
+import Entry from "./webpack-entry.js";
+import OutPut from "./webpack-output.js";
+import Plugin from "./webpack-plugin.js";
+import Module from "./webpack-module.js";
+import DevServer from "./webpack-devServer.js";
+import TsConfigure from "./webpack-tsloader.js";
 
-const workPath = process.cwd()
+const workPath = process.cwd();
 
 const defaultConfig = {
-	entry: './src/index',
+	entry: "./src/index",
 	output: {
 		filename: `[name]-[chunkhash:4].js`,
-		path: path.resolve(workPath, './dist/js')
+		path: path.resolve(workPath, "./dist/js")
 	}
-}
+};
 
-export default class Configrue{
+export default class Configrue {
 	constructor() {
-		this.webpackConfig = defaultConfig
+		this.webpackConfig = defaultConfig;
 	}
 
 	build(setting) {
-		if(!setting) return;
+		if (!setting) return;
 		const configrues = [
 			new Entry(setting),
 			new OutPut(setting),
@@ -35,27 +35,28 @@ export default class Configrue{
 
 		let webpack = {
 			...this.webpackConfig,
-			mode: process.env.NODE_ENV === 'development' 
-				? 'development'
-				: 'production' ,
-			devtool: process.env.NODE_ENV === 'development'
-				? 'source-map'
-				: false,
+			mode:
+				process.env.NODE_ENV === "development"
+					? "development"
+					: "production",
+			devtool:
+				process.env.NODE_ENV === "development" ? "source-map" : false,
 			resolve: {
-				extensions:['.js', '.jsx', '.json']
-			}
-		}
+				extensions: [".js", ".jsx", ".json"]
+			},
+			watch: true
+		};
 
 		// 生成 webpack 配置
 		configrues.map(item => {
-			return item.configure(webpack)
+			return item.configure(webpack);
 		});
 		return webpack;
 	}
 
 	compileTs(setting) {
 		// 生成ts配置
-		if(!setting) return;
+		if (!setting) return;
 		const configrues = [
 			new Entry(setting),
 			new OutPut(setting),
@@ -66,21 +67,17 @@ export default class Configrue{
 
 		let webpack = {
 			...this.webpackConfig,
-			mode: process.env.NODE_ENV === 'dev' 
-				? 'development'
-				: 'production' ,
-			devtool: process.env.NODE_ENV === 'dev'
-				? 'source-map'
-				: false,
+			mode: process.env.NODE_ENV === "dev" ? "development" : "production",
+			devtool: process.env.NODE_ENV === "dev" ? "source-map" : false,
 			resolve: {
-				extensions:['.js', '.ts', '.tsx']
+				extensions: [".js", ".ts", ".tsx"]
 			}
-		}
+		};
 
 		// 生成 webpack 配置
 		configrues.map(item => {
-			return item.configure(webpack)
+			return item.configure(webpack);
 		});
-		return webpack
+		return webpack;
 	}
 }
