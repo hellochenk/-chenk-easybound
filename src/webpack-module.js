@@ -45,7 +45,8 @@ export default class Module extends Configure {
 				{
 					loader: "css-loader", // 将 CSS 转化成 CommonJS 模块
 					options: {
-						modules: true
+						modules: true,
+						localIdentName: "[local]_[hash:base64:4]"
 					}
 				},
 				{
