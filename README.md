@@ -10,13 +10,13 @@
 - 编译node
 
 ### 项目结构：
-
+```
 +src
  +projectName
   -index.js //入口文件
   -index.html //html模板
 config.js
-
+```
 在config.js 中要配置项目名称：
 ```javascript
 module.exports = {
