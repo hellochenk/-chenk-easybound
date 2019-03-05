@@ -6,13 +6,15 @@ export default class Entry extends Configure {
 	}
 
 	configure(webpack) {
-		const { config: { apps, lang } } = this;
+		const {
+			config: { apps, lang }
+		} = this;
 		if (typeof apps === "string") {
-			webpack.entry = `./src/${apps}/index.${lang}`
+			webpack.entry = `./src/${apps}/index.${lang || js}`;
 		} else {
-			webpack.entry = apps.reduce((acc, cur) =>{
-				return {...acc, [cur]: `./src/${cur}/index.${lang}`}
-			}, {})
+			webpack.entry = apps.reduce((acc, cur) => {
+				return { ...acc, [cur]: `./src/${cur}/index.${lang || "js"}` };
+			}, {});
 		}
 	}
 }

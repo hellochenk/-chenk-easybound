@@ -11,24 +11,27 @@ export default class Plugin extends Configure {
 		super(props);
 	}
 
-	configure(webpack) {
-		const { output } = webpack;
+	configure(webpackConfig) {
+		const { output } = webpackConfig;
 		// console.log('app_mode', process.env.app_mode)
-		webpack.plugins = [
+		webpackConfig.plugins = [
 			// new HtmlWebpackPlugin()
-			...this.getHtmlWebpackPlugin(webpack)
+			...this.getHtmlWebpackPlugin(webpackConfig)
 			// new UglifyJSPlugin()
 		];
 		if (process.env.NODE_ENV !== "development") {
-			webpack.plugins.push(
-				new UglifyJSPlugin(),
+			webpackConfig.plugins.push(new UglifyJSPlugin());
+		} else {
+			// console.log("webpack.HotModuleReplacementPlugin", webpack);
+			webpackConfig.plugins.push(
+				// 热更新
 				new webpack.HotModuleReplacementPlugin()
 			);
 		}
 	}
 
-	getHtmlWebpackPlugin(webpack) {
-		const { output } = webpack;
+	getHtmlWebpackPlugin(webpackConfig) {
+		const { output } = webpackConfig;
 		// console.log('path ......', output.path)
 		// const aa = fs.readFileSync(path.resolve(workDir, `./src/home/index.html`))
 		// fs.writeFileSync(path.resolve(workDir, './haha'), aa)

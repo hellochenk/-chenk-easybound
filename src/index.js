@@ -30,7 +30,8 @@ class Main {
 				v => v,
 				"production"
 			)
-			.option("-t, --ts", "运行ts模式", v => v, "typescript")
+			.option("-t, --tsDev", "运行ts模式", v => v, "typescript")
+			.option("-t, --tsProd", "运行ts模式", v => v, "typescript")
 			.option("-c. --config <items>", "指定配置文件", v => v.split(","))
 			.version("0.0.1", "-v, --version")
 			.parse(process.argv);
@@ -45,18 +46,24 @@ class Main {
 			this.dev(commander.dev, commander.config);
 		}
 
-		if (commander.ts) {
+		if (commander.tsDev) {
 			this.ts(commander.ts, commander.config);
 		}
 
 		if (commander.dist) {
 			this.prod(commander.dist, commander.config);
 		}
+
+		if (commander.tsProd) {
+			// TODO
+			console.log("ts production model");
+		}
 	}
 
 	getWebpackCompiler(webpackConfig, callBack) {
 		// 传入生成配置，执行编译
 		const compiler = webpack(webpackConfig, callBack);
+
 		if (!callBack) {
 			let bundleStartTime;
 			compiler.plugin("compile", () => {
@@ -83,11 +90,10 @@ class Main {
 			const setting = this.ReadConfig.read(file);
 			setting.mode = "development";
 			const appConfig = this.webpackConfigure.build(setting);
-			// const compile = this.getWebpackCompiler(appConfig);
 
 			const { devServer } = appConfig;
 			// console.log('devServer', devServer)
-			// WebpackDevServer.addDevServerEntrypoints(appConfig, devServer);
+			WebpackDevServer.addDevServerEntrypoints(appConfig, devServer);
 			new WebpackDevServer(
 				this.getWebpackCompiler(appConfig),
 				devServer
@@ -131,20 +137,21 @@ class Main {
 		process.env.app_mode = "prod";
 	}
 
+	// dev
 	ts(target, file) {
 		log(chalk.cyan(`start compile. model:${target}`));
 		process.env.app_mode = "ts";
+		process.env.NODE_ENV = "development";
 		const setting = this.ReadConfig.read(file);
 		setting.mode = "development";
 		// console.log('setting ->>>>>>', setting)
 
 		const appConfig = this.webpackConfigure.compileTs(setting);
-		// console.log('ts config ================>', appConfig);
 
 		const { devServer } = appConfig;
-		const compile = this.getWebpackCompiler(appConfig);
+		// const compile = this.getWebpackCompiler(appConfig);
 
-		// // WebpackDevServer.addDevServerEntrypoints(appConfig, devServer);
+		WebpackDevServer.addDevServerEntrypoints(appConfig, devServer);
 		new WebpackDevServer(this.getWebpackCompiler(appConfig)).listen(
 			devServer.port,
 			err => {

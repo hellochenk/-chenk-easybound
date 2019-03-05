@@ -25,10 +25,17 @@ export default class ReadConfig {
 		// let a = fs.readdirSync(path.resolve(workingDir, "./src"));
 		try {
 			let defaultConfig = ReadConfig.defaultconfig;
+
+			// console.log("loaderFiles", loaderFiles);
+
 			return loaderFiles.reduce((acc, cur) => {
 				let config = require(path.resolve(workingDir, cur));
 				return { ...acc, ...config };
 			}, defaultConfig);
+
+			// console.log("finilyconfig", finilyconfig);
+
+			return finilyconfig;
 		} catch (err) {
 			console.log(err);
 		}

@@ -33,6 +33,8 @@ export default class Configrue {
 			new DevServer(setting)
 		];
 
+		console.log("current process.env.NODE_ENV", process.env.NODE_ENV);
+
 		let webpack = {
 			...this.webpackConfig,
 			mode:
@@ -65,12 +67,18 @@ export default class Configrue {
 			new TsConfigure(setting)
 		];
 
+		// console.log("current process.env.NODE_ENV", process.env.NODE_ENV);
+
 		let webpack = {
 			...this.webpackConfig,
-			mode: process.env.NODE_ENV === "dev" ? "development" : "production",
-			devtool: process.env.NODE_ENV === "dev" ? "source-map" : false,
+			mode:
+				process.env.NODE_ENV === "development"
+					? "development"
+					: "production",
+			devtool:
+				process.env.NODE_ENV === "development" ? "source-map" : false,
 			resolve: {
-				extensions: [".js", ".ts", ".tsx"]
+				extensions: [".tsx", ".ts", ".js"]
 			}
 		};
 
