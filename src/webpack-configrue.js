@@ -33,9 +33,9 @@ export default class Configrue {
 			new DevServer(setting)
 		];
 
-		console.log("current process.env.NODE_ENV", process.env.NODE_ENV);
+		// console.log("current process.env.NODE_ENV", process.env.NODE_ENV);
 
-		let webpack = {
+		let mywebpack = {
 			...this.webpackConfig,
 			mode:
 				process.env.NODE_ENV === "development"
@@ -51,9 +51,12 @@ export default class Configrue {
 
 		// 生成 webpack 配置
 		configrues.map(item => {
-			return item.configure(webpack);
+			return item.configure(mywebpack);
 		});
-		return webpack;
+
+		console.log("get mywebpack.entry", mywebpack.entry);
+
+		return mywebpack;
 	}
 
 	compileTs(setting) {
@@ -69,7 +72,7 @@ export default class Configrue {
 
 		// console.log("current process.env.NODE_ENV", process.env.NODE_ENV);
 
-		let webpack = {
+		let mywebpack = {
 			...this.webpackConfig,
 			mode:
 				process.env.NODE_ENV === "development"
@@ -84,8 +87,9 @@ export default class Configrue {
 
 		// 生成 webpack 配置
 		configrues.map(item => {
-			return item.configure(webpack);
+			return item.configure(mywebpack);
 		});
-		return webpack;
+
+		return mywebpack;
 	}
 }

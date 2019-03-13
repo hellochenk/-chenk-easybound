@@ -14,12 +14,14 @@ const log = console.log;
 class Main {
 	// commander;
 	constructor() {
+		console.log("3 constructor");
 		this.commander = commander;
 		this.ReadConfig = new ReadConfig();
 		this.webpackConfigure = new webpackConfigure();
 	}
 
 	cmd() {
+		console.log("4 cmd scripts");
 		const { commander } = this;
 		commander
 			.version("0.1")
@@ -42,7 +44,6 @@ class Main {
 		}
 
 		if (commander.dev) {
-			// this.testFn(commander.dev, commander.config);
 			this.dev(commander.dev, commander.config);
 		}
 
@@ -92,49 +93,63 @@ class Main {
 			const appConfig = this.webpackConfigure.build(setting);
 
 			const { devServer } = appConfig;
-			// console.log('devServer', devServer)
 			WebpackDevServer.addDevServerEntrypoints(appConfig, devServer);
+
 			new WebpackDevServer(
 				this.getWebpackCompiler(appConfig),
 				devServer
 			).listen(devServer.port, devServer.host, err => {
 				// console.log('err: ', err)
-				console.log("start .................");
 				if (err) {
 					console.log(err);
 				}
 				console.log(`应用启动成功，端口:${devServer.port}`);
 			});
-
-			// if (devServer.open) {
-			// 	const {name, basePath, apps} = options;
-			// 	const {host, port} = devServer;
-			// 	open(`http://${host}${port ? (":" + port) : ""}${basePath}/${name}/${apps[0]}`)
-			// }
-
-			// this.getWebpackCompiler(appConfig, (err, stats) => {
-			// 	if (err) {
-			// 		return console.log(chalk.red(err));
-			// 	}
-			// 	process.stdout.write(
-			// 		stats.toString({
-			// 			colors: true,
-			// 			modules: false,
-			// 			children: false,
-			// 			chunks: false,
-			// 			chunkModules: false
-			// 		}) + `\n`
-			// 	);
-			// });
 		} catch (err) {
 			console.log("err", chalk.red(err));
 		}
 	}
 
 	prod(target, file) {
-		// 将文件编译打包，
-		log(chalk.cyan(`start compile. model:`), chalk.red(`${target}`));
-		process.env.app_mode = "prod";
+		
+		try {
+            // console.info("正在运行打包部署，目标环境：" + target);
+            process.env.NODE_ENV = "production";
+            // process.env.DEPLOY_ENV = target;
+
+            // -------
+			log(chalk.cyan(`start compile. model:`), chalk.red(`${target}`));
+			process.env.app_mode = "production";
+
+			const setting = this.ReadConfig.read(file);
+			setting.mode = "development";
+			const appConfig = this.webpackConfigure.build(setting);
+
+
+
+			// this.getWebpackCompiler(appConfig);
+			// ----
+
+            // const webpackConfig = this.getWebpackConfig(files);
+            // console.info(
+            //     "准备打包应用：" + Object.keys(webpackConfig.entry).join(",")
+            // );
+
+            this.getWebpackCompiler(appConfig, function(err, stats) {
+                if (err) throw err;
+                process.stdout.write(
+                    stats.toString({
+                        colors: true,
+                        modules: false,
+                        children: false,
+                        chunks: false,
+                        chunkModules: false
+                    }) + `\n`
+                );
+            });
+        } catch (e) {
+            console.error(e);
+        }
 	}
 
 	// dev

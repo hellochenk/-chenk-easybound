@@ -1,10 +1,4 @@
 #!/usr/bin/env node
-// go->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-const Main = require("../lib/index.js").default;
+const Main = require("../index").default;
 let main = new Main();
-
-// prod
 main.cmd();
-
-// dev
-// main.testFn();
