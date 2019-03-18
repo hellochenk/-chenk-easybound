@@ -7,7 +7,7 @@ const log = console.log;
 export default class ReadConfig {
 	static defaultConfigName = "config";
 
-	static defaultconfig = {
+	static defaultSetting = {
 		name: "myApp",
 		title: "myApp",
 		port: "8080"
@@ -24,18 +24,18 @@ export default class ReadConfig {
 
 		// let a = fs.readdirSync(path.resolve(workingDir, "./src"));
 		try {
-			let defaultConfig = ReadConfig.defaultconfig;
+			let defaultSetting = ReadConfig.defaultSetting;
 
 			// console.log("loaderFiles", loaderFiles);
 
 			return loaderFiles.reduce((acc, cur) => {
 				let config = require(path.resolve(workingDir, cur));
 				return { ...acc, ...config };
-			}, defaultConfig);
+			}, defaultSetting);
 
 			// console.log("finilyconfig", finilyconfig);
 
-			return finilyconfig;
+			// return finilyconfig;
 		} catch (err) {
 			console.log(err);
 		}

@@ -11,7 +11,10 @@ export default class Module extends Configure {
 		 * 装载配置，更新webpack然后返回
 		 */
 		webpack.module = {
-			rules: [this.loaderJs(), ...this.loadStyles()]
+			rules: [
+				this.loaderJs(), 
+				...this.loadStyles()
+			]
 		};
 		return webpack;
 	}
@@ -22,11 +25,6 @@ export default class Module extends Configure {
 			exclude: /(node_modules|bower_components)/,
 			use: {
 				loader: "babel-loader"
-				// custom babel loader......
-				// options: {
-				// 	presets: ["@babel/preset-env", "@babel/preset-react"],
-				// 	plugins: ["@babel/plugin-transform-runtime", "@babel/plugin-syntax-dynamic-import"]
-				// }
 			}
 		};
 	}
@@ -46,7 +44,7 @@ export default class Module extends Configure {
 					loader: "css-loader", // 将 CSS 转化成 CommonJS 模块
 					options: {
 						modules: true,
-						localIdentName: "[local]_[hash:base64:4]"
+						// localIdentName: "[local]_[hash:base64:4]"
 					}
 				},
 				{

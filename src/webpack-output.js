@@ -12,7 +12,14 @@ export default class Output extends Configure {
 		webpack.output = {
 			path: path.resolve(workDir, 'dist'),
 			filename: `[name]/js/[name][hash:4].js`,
-			chunkFilename: '[name].js',
+            // chunkFilename: '[name].bundle.js',
+			chunkFilename: '[id].js',
+            publicPath: '/',
+
+            // path: path.resolve (__dirname, 'dist'),
+            // filename: '[name].bundle.js',
+            // publicPath: '/',
+            // chunkFilename: '[name].bundle.js',
 
 			// path: path.join(process.cwd(),version&&isString(version)?`dist/${version}`:'dist'),
    //          filename: `[name]/js/[name].js`,

@@ -13,18 +13,14 @@ export default class Plugin extends Configure {
 
 	configure(webpackConfig) {
 		const { output } = webpackConfig;
-		// console.log('app_mode', process.env.app_mode)
+
 		webpackConfig.plugins = [
-			// new HtmlWebpackPlugin()
 			...this.getHtmlWebpackPlugin(webpackConfig)
-			// new UglifyJSPlugin()
 		];
 		if (process.env.NODE_ENV !== "development") {
 			webpackConfig.plugins.push(new UglifyJSPlugin());
 		} else {
-			// console.log("webpack.HotModuleReplacementPlugin", webpack);
 			webpackConfig.plugins.push(
-				// 热更新
 				new webpack.HotModuleReplacementPlugin()
 			);
 		}
@@ -32,10 +28,6 @@ export default class Plugin extends Configure {
 
 	getHtmlWebpackPlugin(webpackConfig) {
 		const { output } = webpackConfig;
-		// console.log('path ......', output.path)
-		// const aa = fs.readFileSync(path.resolve(workDir, `./src/home/index.html`))
-		// fs.writeFileSync(path.resolve(workDir, './haha'), aa)
-		// console.log('aa ->>>>>>', aa)
 		const {
 			config: { apps }
 		} = this;
@@ -43,12 +35,13 @@ export default class Plugin extends Configure {
 			return new HtmlWebpackPlugin({
 				filename: `${output.path}/${item}/index.html`,
 				chunks: [item],
-				template: path.resolve(workDir, `./src/${item}/index.html`)
+				template: path.resolve(workDir, `./src/${item}/index.html`),
+			    favicon: path.resolve(workDir, `./src/${item}/favicon.ico`),
 			});
 		});
-		// console.log(htmlconfig)
 		return htmlconfig;
 	}
+	
 	reactPlugin() {}
 	angularPlugin() {}
 	nodePlugin() {}

@@ -36,11 +36,13 @@ export default class DevServer extends Configure {
 			 * 任何在 "contentBase" 的资源文件发生变更时, 页面会触发 reload
 			 */
 			watchContentBase: true,
-			historyApiFallback: {
+			historyApiFallback: true, 
+			// historyApiFallback: {
 				// 请求路径使用"."也应该可以支持API降级
 				// See https://github.com/facebookincubator/create-react-app/issues/387.
-				disableDotRule: true
-			},
+				// disableDotRule: false
+	            index: '/index.html',
+			// },
 
 			quiet: true,
 			stats: { color: "red" }

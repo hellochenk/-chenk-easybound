@@ -14,8 +14,18 @@ const defaultConfig = {
 	entry: "./src/index",
 	output: {
 		filename: `[name]-[chunkhash:4].js`,
-		path: path.resolve(workPath, "./dist/js")
-	}
+		path: path.resolve(workPath, "./dist/js"),
+		vendor: [
+			'react',
+			'react-dom',
+			'redux',
+			'react-router-dom',
+			'react-loadable',
+			// 'redux-saga',
+			'lodash',
+		],
+	},
+
 };
 
 export default class Configrue {
@@ -25,13 +35,16 @@ export default class Configrue {
 
 	build(setting) {
 		if (!setting) return;
-		const configrues = [
+		let configrues = [
 			new Entry(setting),
 			new OutPut(setting),
 			new Plugin(setting),
 			new Module(setting),
-			new DevServer(setting)
 		];
+
+		if(process.env.NODE_ENV === 'development') {
+			configrues.push(new DevServer(setting));
+		}	
 
 		// console.log("current process.env.NODE_ENV", process.env.NODE_ENV);
 
@@ -54,7 +67,7 @@ export default class Configrue {
 			return item.configure(mywebpack);
 		});
 
-		console.log("get mywebpack.entry", mywebpack.entry);
+		// console.log("get mywebpack.entry", mywebpack.entry);
 
 		return mywebpack;
 	}
