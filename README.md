@@ -1,5 +1,5 @@
 
-## easybound?
+## easybound my node cli
 
 - <del>实现demo</del>
 - <del>编译react</del>
